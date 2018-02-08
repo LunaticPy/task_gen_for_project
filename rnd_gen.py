@@ -26,7 +26,7 @@ def py_scr(pat, n_copy, pos=2):
             return rez[:n_copy]
     elif isinstance(pat, dict):
         d_pat = get_var(next (iter (pat.values())), n_copy)
-        print(d_pat)
+        
         rez = []
         for j in range(n_copy):
             rez.append(str(eval(get_str(next (iter (pat.keys())), d_pat, j))))
