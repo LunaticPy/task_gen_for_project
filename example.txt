@@ -1,0 +1,15 @@
+{
+'name': ['Olaf', 'Den', 'Morty'],
+'alg__scn__movement' : 
+    {
+    'alg': 'rnd',
+    'vars':['castle|action|alg__py__number', 'alg__rnd__dormitory|cook|alg__py__number', 'castle|cook|alg__py__number'],
+    'args':{'castle': ['big castle', 'medium castle', 'small castle'], 
+            'alg__rnd__dormitory': ['big dormitory', 'medium dormitory', 'small dormitory'],
+            'action': ['attack', 'come in', 'move around'], 'cook': ['chiken', 'potato', 'tomato'],
+            'alg__py__number': {'<~x~>+<~y~>':{'x':['1','2','3','4','5'], 'y':['1','2','3','4','5']}}},
+    'rez_names': 'diraction|action|number' 
+    }
+}
+\text_start
+Hello <~name~> you are in <~diraction~> and you want to <~action~> <~number~> times.
