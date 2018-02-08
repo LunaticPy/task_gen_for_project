@@ -26,7 +26,6 @@ def py_scr(pat, n_copy, pos=2):
             return rez[:n_copy]
     elif isinstance(pat, dict):
         d_pat = get_var(next (iter (pat.values())), n_copy)
-        
         rez = []
         for j in range(n_copy):
             rez.append(str(eval(get_str(next (iter (pat.keys())), d_pat, j))))
@@ -127,7 +126,7 @@ def gen(pattern, n_copy, head):
     for part in re.split(r"\\part_split", pattern):
         r_val = re.split(r"\\text_start", part)
         d_pat = get_var(eval(r_val[0]), n_copy)
-        print(d_pat)
+
         for i in range(n_copy):
             rez[i] = rez[i] + '\n' + get_str(r_val[1], d_pat, i)
 
