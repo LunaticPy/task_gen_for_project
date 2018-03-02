@@ -1,10 +1,19 @@
 import re
-import random
 import numpy as np
-
+"""
+Created on March 2 02:16:34 2018
+@author: Chertkov Maxim
+"""
 
 
 def get_str(pat, d_pat, pos=0):
+    """
+    make string from some pattern and dictionary
+    :param pat: pattern which we use in form
+    :param d_pat: dictionary for replacement
+    :param pos: shifting
+    :return: final string
+    """
     for j in d_pat.keys():
         temp = re.compile("<~" + j + "~>")
         pat = temp.sub(d_pat[j][pos], pat)
@@ -15,6 +24,9 @@ def py_scr(pat, n_copy, pos=2):
     """
     format: alg__py__%name% : '%alg%' or {'%alg%' : '%variables%'}
     expl: {'(~x~)+(~y~)' : ['x':['np.pi', '3', %py_script%, .....], ['y':[....]]]} }
+    :param pat: pattern to be processed
+    :param pos: shifting
+    :return: list for replacement
     """
 
     if isinstance(pat, str):
@@ -37,11 +49,24 @@ def py_scr(pat, n_copy, pos=2):
 
 
 def rnd(pat, n_copy, pos=0):
+    """
+        This function take (or make) n_copy random elements from pat list
+        :param pat: pattern to be processed
+        :param pos: shifting and random seed
+        :return: list for replacement
+    """
+
     np.random.seed(pos)
     return np.random.choice(pat, n_copy)
 
 
 def shuffle(pat, n_copy, pos=0):
+    """
+        This function expand list of values and shuffle it
+        :param pat: pattern to be processed
+        :param pos: shifting and random seed
+        :return: list for replacement
+    """
     np.random.seed(pos)
 
     if n_copy>len(pat):
@@ -52,7 +77,10 @@ def shuffle(pat, n_copy, pos=0):
 
     return pat
 
-
+"""
+list of algorithms which i use
+in dict format 
+"""
 alg = {"rnd": lambda pat, n_copy : rnd(pat, n_copy),
       'py': lambda pat, n_copy: py_scr(pat,  n_copy),
       'smp': lambda pat, n_copy:shuffle(pat, n_copy),
@@ -61,12 +89,16 @@ alg = {"rnd": lambda pat, n_copy : rnd(pat, n_copy),
 
 def make_scn(pat, n_copy, pos=0):
     """
-    format: 'alg__scn__%name%' : {
+    This function creates a scenario of several related structures
+
+    in format: 'alg__scn__%name%' : {
     'alg': '%rnd/smp%',
     'vars':['%name1%|%name2%|...', '%name3%|%name2|...', '%name1%|%name3|...'], #should be equal and more than 1
     'args':{dicts in get_var() format},
     'rez_names': '%name1%|%name2%|...' #should be equal with vars elements
     }
+    :param pat: pattern to be processed
+    :param pos: shifting and random seed
     :return dict!!
     """
     rez = dict.fromkeys(pat['rez_names'].split('|'), [])
@@ -102,8 +134,11 @@ def make_scn(pat, n_copy, pos=0):
 
 def get_var(pat, n_copy):
     """
+    This function processes patterns and forwards them to processing in the necessary algorithms
     format: alg__%alg_name%__%name% ... or just %name%
     my_dict = {'key': 'value'}
+    :param pat: dict with instructions
+    :return dict with final variables
     """
     var = dict()
     for i, j in zip(pat.keys(), range(len(pat))):
@@ -120,6 +155,14 @@ def get_var(pat, n_copy):
 
 
 def gen(pattern, n_copy, head):
+    """
+    generate texts from pattern in .tex format
+
+    :param pattern: some text with instructions
+    :param n_copy: number of copies
+    :param head: list of latex head files
+    :return: list of texts
+    """
     head = '\n'.join(head)
     rez = [""]*n_copy
 

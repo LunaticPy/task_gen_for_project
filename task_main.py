@@ -1,12 +1,23 @@
-import matplotlib.pyplot as plt
 import os
-import shutil
 from rnd_gen import gen
 
+"""
+Created on March 2 02:16:34 2018
+@author: Chertkov Maxim
+"""
 
 class task_gen:
+    """
 
+    This class get text similar to Latex buffed template syntax
+    produce pdf and/or latex document
+
+    """
     def __init__(self, another=None):
+        """
+        construct base format of class
+        :param another: copy parameters of another task_gen object
+        """
         if another is None:
             self.t_name = "unknow"
             self.pattern = ""
@@ -21,6 +32,8 @@ class task_gen:
 
     def make_head(self, head, reg=3):
         """
+        helps with changes of head files in tex syntax
+
         :param head: text with headlines separated '\n'
         :param reg:0 -clean 1-new 2-add
         """
@@ -43,6 +56,13 @@ class task_gen:
 
 
     def read_pattern(self, patt, way_text=0):
+        """
+        read and save text data in class object
+
+        :param patt: way to txt file or text
+        :param way_text: indicator for read mode
+        :return:
+        """
         if (way_text==0):
             with open (patt, 'r') as f:
                 self.pattern = f.read()
@@ -50,7 +70,12 @@ class task_gen:
             self.pattern = patt
 
     def set_name_copy(self, t_name="unknow", num_of_copy=2):
-
+        """
+        set ordinal parameters
+        :param t_name: name of files series
+        :param num_of_copy: number of variations 2-default
+        :return:
+        """
         self.t_name = t_name
         self.num_of_copy = num_of_copy
 
@@ -66,6 +91,11 @@ class task_gen:
         gen(self.pattern, self.num_of_copy, self.head)
 
     def get_latex(self, out=0):
+        """
+        make latex data in tex files of return list of texts
+        :param out: mod 0-not 1-yes
+        :return:
+        """
         if out == 1:
             return gen(self.pattern, self.num_of_copy, self.head)
         else:
@@ -81,6 +111,8 @@ class task_gen:
 
     def get_pdf(self, tex_rdy=0, sv_tex=0):
         """
+        make pdf files and save latex, if you need
+
         :param tex_rdy: if yes use direction /self.t_name
         :param sv_tex: if you need .tex files use 1
         """
@@ -89,40 +121,17 @@ class task_gen:
 
         current = os.getcwd()
         wd = current + '\\' + self.t_name
-        #os.makedirs(wd + '_pdf')
-        os.chdir(wd)# + '_pdf')
+        os.chdir(wd)
 
         for i in os.listdir(wd):
             os.system("pdflatex "+wd+"\\"+i)
-        os.chdir(current)
-        #if sv_tex==0:
-        #   shutil.rmtree(wd)
 
+        if sv_tex==0:
+            for i in os.listdir():
+                if i[-3:] != 'pdf':
+                    os.remove(i)
+        os.chdir(current)
 
 
 #-----------------------------------------------------------------------------------------------------------------------
-"""
-class img_gen:
-    def __init__(self):
-        self.w_type = 1
-        self.i_name = "unknow"
-        self.pattern = ""
-        self.num_of_copy = 2
 
-    def read_pattern(self, patt, way_text=0):
-        if (way_text==0):
-            with open (patt, 'r') as f:
-                self.pattern = f.read()
-        else:
-            self.pattern = patt
-
-    def set_params(self, i_name="unknow", num_of_copy=2, w_type=1):
-        self.w_type = w_type
-        self.i_name = i_name
-        self.num_of_copy = num_of_copy
-
-    def get_preview(self):
-        pass
-    def get_imgs(self, out=0):
-        pass
-"""
