@@ -22,6 +22,8 @@ def get_str(pat, d_pat, pos=0):
 
 def py_scr(pat, n_copy, pos=2):
     """
+    You could make n_copy elements by your script or generate with template constructions by syntax inserts
+    -puts 'error' if pat is not dict or str and 'empty' if script make not enough elements
     format: alg__py__%name% : '%alg%' or {'%alg%' : '%variables%'}
     expl: {'(~x~)+(~y~)' : ['x':['np.pi', '3', %py_script%, .....], ['y':[....]]]} }
     :param pat: pattern to be processed
@@ -89,7 +91,8 @@ alg = {"rnd": lambda pat, n_copy : rnd(pat, n_copy),
 
 def make_scn(pat, n_copy, pos=0):
     """
-    This function creates a scenario of several related structures
+    This function processes patterns and forwards them to processing in the in the required algorithm and substitutes
+    in accordance with the scenario
 
     in format: 'alg__scn__%name%' : {
     'alg': '%rnd/smp%',
@@ -99,7 +102,7 @@ def make_scn(pat, n_copy, pos=0):
     }
     :param pat: pattern to be processed
     :param pos: shifting and random seed
-    :return dict!!
+    :return dict which update main
     """
     rez = dict.fromkeys(pat['rez_names'].split('|'), [])
 
@@ -134,7 +137,7 @@ def make_scn(pat, n_copy, pos=0):
 
 def get_var(pat, n_copy):
     """
-    This function processes patterns and forwards them to processing in the necessary algorithms
+    This function processes patterns and forwards them to processing in the in the required algorithm
     format: alg__%alg_name%__%name% ... or just %name%
     my_dict = {'key': 'value'}
     :param pat: dict with instructions
